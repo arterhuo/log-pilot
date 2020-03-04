@@ -168,6 +168,13 @@ EOF
 if [ -n "$FILEBEAT_OUTPUT" ]; then
     LOGGING_OUTPUT=$FILEBEAT_OUTPUT
 fi
+cat >> $FILEBEAT_CONFIG << EOF
+processors:
+- drop_fields:
+    fields: ["@metadata.filebeat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "beat.hostname", "beat.name", "beat.version"]
+EOF
+
+
 
 case "$LOGGING_OUTPUT" in
     elasticsearch)
