@@ -36,11 +36,15 @@ logging.files.permissions: ${FILEBEAT_LOG_PERMISSION:-0600}
 ${FILEBEAT_MAX_PROCS:+max_procs: ${FILEBEAT_MAX_PROCS}}
 setup.template.name: "${FILEBEAT_INDEX:-filebeat}"
 setup.template.pattern: "${FILEBEAT_INDEX:-filebeat}-*"
-filebeat.config.inputs:
-  enabled: true
-  path: prospectors.d/*.yml
-  reload.enabled: true
-  reload.period: 10s
+filebeat.config:
+    inputs:
+        enabled: true
+        path: \${path.config}/prospectors.d/*.yml
+        reload.enabled: true
+        reload.period: 10s
+    modules:
+        path: \${path.config}/modules.d/*.yml
+        reload.enabled: true
 EOF
 }
 

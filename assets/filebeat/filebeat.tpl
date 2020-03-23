@@ -5,9 +5,6 @@
       - {{ .HostDir }}/{{ .File }}
   scan_frequency: 10s
   fields_under_root: true
-  {{if .Stdout}}
-  docker-json: true
-  {{end}}
   {{if eq .Format "json"}}
   json.keys_under_root: true
   {{end}}
