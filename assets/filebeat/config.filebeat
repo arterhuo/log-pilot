@@ -144,6 +144,11 @@ $(base)
 output.kafka:
     hosts: [$KAFKA_BROKERS]
     topic: '%{[topic]}'
+    topics:
+      - topic: "xlog%{[letter]}"
+        when.has_fields: ['letter']
+      - topic: '%{[topicassign]}'
+        when.has_fields: ['topicassign']
     ${KAFKA_VERSION:+version: ${KAFKA_VERSION}}
     ${KAFKA_USERNAME:+username: ${KAFKA_USERNAME}}
     ${KAFKA_PASSWORD:+password: ${KAFKA_PASSWORD}}
@@ -186,13 +191,14 @@ processors:
     fail_on_error: false
     ignore_missing: true
 - drop_fields:
-    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset"]
+    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset", "log.file.path", "source", "log.flags", "ecs.version", "agent.id"]
 - truncate_fields:
     fields:
     - letter
     max_characters: 1
     fail_on_error: false
     ignore_missing: true
+
 EOF
 
 
