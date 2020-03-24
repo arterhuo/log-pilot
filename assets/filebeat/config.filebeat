@@ -173,8 +173,26 @@ if [ -n "$FILEBEAT_OUTPUT" ]; then
 fi
 cat >> $FILEBEAT_CONFIG << EOF
 processors:
+- copy_fields:
+    fields:
+    - from: appname
+      to: letter
+    fail_on_error: false
+    ignore_missing: true
+- copy_fields:
+    fields:
+    - from: log.offset
+      to: offset
+    fail_on_error: false
+    ignore_missing: true
 - drop_fields:
-    fields: ["@metadata.filebeat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "beat.hostname", "beat.name", "beat.version"]
+    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset"]
+- truncate_fields:
+    fields:
+    - letter
+    max_characters: 1
+    fail_on_error: false
+    ignore_missing: true
 EOF
 
 
