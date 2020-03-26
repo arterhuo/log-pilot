@@ -146,12 +146,7 @@ output.kafka:
     topic: '%{[topic]}'
     topics:
       - topic: "xlog%{[letter]}"
-        when.and:
-          - has_fields: ['letter']
-          - not:
-            has_fields: ['topicassian']
-      - topic: "%{{topicassian}}"
-        when.has_fields: ['topicassian']
+        when.has_fields: ['letter']
     ${KAFKA_VERSION:+version: ${KAFKA_VERSION}}
     ${KAFKA_USERNAME:+username: ${KAFKA_USERNAME}}
     ${KAFKA_PASSWORD:+password: ${KAFKA_PASSWORD}}
@@ -187,14 +182,20 @@ processors:
       to: letter
     fail_on_error: false
     ignore_missing: true
-- copy_fields:
+- rename:
     fields:
     - from: log.offset
       to: offset
     fail_on_error: false
     ignore_missing: true
+- rename:
+    fields:
+    - from: host.id
+      to: hostname
+    fail_on_error: false
+    ignore_missing: true
 - drop_fields:
-    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset", "log.file.path", "source", "log.flags", "ecs.version", "agent.id"]
+    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset", "log.file.path", "source", "log.flags", "ecs.version", "agent.id", "host"]
 - truncate_fields:
     fields:
     - letter
@@ -203,8 +204,8 @@ processors:
     ignore_missing: true
 - truncate_fields:
     fields:
-    - container.id
-    max_characters: 12
+    - message
+    max_characters: 16384
     fail_on_error: false
     ignore_missing: true
 

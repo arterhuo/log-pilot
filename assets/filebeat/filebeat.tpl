@@ -4,6 +4,10 @@
 {{ else }}
 - type: log
 {{end}}
+
+  multiline.pattern: '^[[:space:]]+(at|\.{3})[[:space:]]+\b|^Caused by:'
+  multiline.negate: false
+  multiline.match: after
   enabled: true
   paths:
       - {{ .HostDir }}/{{ .File }}
