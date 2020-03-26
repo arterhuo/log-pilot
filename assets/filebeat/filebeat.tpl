@@ -1,5 +1,9 @@
 {{range .configList}}
+{{if .Stdout}}
+- type: container
+{{ else }}
 - type: log
+{{end}}
   enabled: true
   paths:
       - {{ .HostDir }}/{{ .File }}

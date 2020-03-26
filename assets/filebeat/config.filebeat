@@ -146,9 +146,12 @@ output.kafka:
     topic: '%{[topic]}'
     topics:
       - topic: "xlog%{[letter]}"
-        when.has_fields: ['letter']
-      - topic: '%{[topicassign]}'
-        when.has_fields: ['topicassign']
+        when.and:
+          - has_fields: ['letter']
+          - not:
+            has_fields: ['topicassian']
+      - topic: "%{{topicassian}}"
+        when.has_fields: ['topicassian']
     ${KAFKA_VERSION:+version: ${KAFKA_VERSION}}
     ${KAFKA_USERNAME:+username: ${KAFKA_USERNAME}}
     ${KAFKA_PASSWORD:+password: ${KAFKA_PASSWORD}}
@@ -196,6 +199,12 @@ processors:
     fields:
     - letter
     max_characters: 1
+    fail_on_error: false
+    ignore_missing: true
+- truncate_fields:
+    fields:
+    - container.id
+    max_characters: 12
     fail_on_error: false
     ignore_missing: true
 
