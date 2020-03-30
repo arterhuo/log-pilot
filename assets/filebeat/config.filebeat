@@ -194,20 +194,22 @@ processors:
       to: hostname
     fail_on_error: false
     ignore_missing: true
-- drop_fields:
-    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset", "log.file.path", "source", "log.flags", "ecs.version", "agent.id", "host"]
 - truncate_fields:
     fields:
     - letter
-    max_characters: 1
+    max_bytes: 1
     fail_on_error: false
     ignore_missing: true
+- drop_fields:
+    fields: ["log.flags"]
 - truncate_fields:
     fields:
     - message
-    max_characters: 16384
+    max_bytes: 16384
     fail_on_error: false
     ignore_missing: true
+- drop_fields:
+    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset", "log.file.path", "source", "ecs.version", "agent.id", "host"]
 
 EOF
 
