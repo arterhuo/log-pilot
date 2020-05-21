@@ -209,7 +209,7 @@ processors:
     fail_on_error: false
     ignore_missing: true
 - drop_fields:
-    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset", "log.file.path", "source", "ecs.version", "agent.id", "host"]
+    fields: ["@metadata.beat", "@metadata.topic", "@metadata.type", "@metadata.version", "index", "prospector.type", "agent.hostname", "agent.ephemeral_id", "agent.version", "input.type", "agent.type", "log.offset", "source", "ecs.version", "agent.id", "host"]
 
 EOF
 
